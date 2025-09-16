@@ -10,8 +10,12 @@ from typing import Optional, Union
 import httpx
 import multiprocess as mp
 import wget
-from loguru import logger
+from loguru_demo import logger
+from collections import OrderedDict
 
+from data_juicer.utils.my_models import AestheticScorer
+from data_juicer.utils.ocr_model import CRAFT
+from data_juicer.utils.unimatch import UniMatch
 from data_juicer.utils.common_utils import nested_access
 from data_juicer.utils.lazy_loader import LazyLoader
 from data_juicer.utils.nltk_utils import (
@@ -39,6 +43,7 @@ openai = LazyLoader("openai")
 ultralytics = LazyLoader("ultralytics")
 tiktoken = LazyLoader("tiktoken")
 dashscope = LazyLoader("dashscope")
+
 
 MODEL_ZOO = {}
 
@@ -131,6 +136,17 @@ def check_model(model_name, force=False):
                 )
     return cached_model_path
 
+
+def copyStateDict(state_dict):
+    if list(state_dict.keys())[0].startswith("module"):
+        start_idx = 1
+    else:
+        start_idx = 0
+    new_state_dict = OrderedDict()
+    for k, v in state_dict.items():
+        name = ".".join(k.split(".")[start_idx:])
+        new_state_dict[name] = v
+    return new_state_dict
 
 def check_model_home(model_name):
     if not DJEMH:
@@ -969,6 +985,52 @@ def prepare_embedding_model(model_path, **model_params):
 
     return type("EmbeddingModel", (), {"encode": encode})()
 
+def prepare_my_aesthetic_model(clip_model_path, weight_model_path, **model_params):
+    if "device" in model_params:
+        device = model_params.pop("device")
+    else:
+        device = "cpu"
+        logger.warning("'device' not specified in 'model_params'. Using 'cpu'.") 
+    
+    # clip_model_path = check_model_home(clip_model_path)
+    model = AestheticScorer(768, device, clip_model_path=clip_model_path, model_path=weight_model_path)
+    model.eval()
+    return model
+
+def prepare_my_ocr_model(model_path, **model_params):
+    if "device" in model_params:
+        device = model_params.pop("device")
+    else:
+        device = "cpu"
+        logger.warning("'device' not specified in 'model_params'. Using 'cpu'.") 
+    model = CRAFT()
+    model.load_state_dict(copyStateDict(torch.load(model_path, map_location=device, weights_only=False)))
+    model = model.to(device)
+    model.eval()
+    return model
+
+def prepare_my_optical_model(model_path, **model_params):
+    if "device" in model_params:
+        device = model_params.pop("device")
+    else:
+        device = "cpu"
+        logger.warning("'device' not specified in 'model_params'. Using 'cpu'.") 
+    device = torch.device(device)
+    model = UniMatch(
+        feature_channels=128,
+        num_scales=2,
+        upsample_factor=4,
+        num_head=1,
+        ffn_dim_expansion=4,
+        num_transformer_layers=6,
+        reg_refine=True,
+        task="flow",
+    )
+    ckpt = torch.load(model_path, map_location=device)
+    model.load_state_dict(ckpt["model"])
+    model = model.to(device)
+    model.eval()
+    return model
 
 def update_sampling_params(sampling_params, pretrained_model_name_or_path, enable_vllm=False):
     if enable_vllm:
@@ -1036,6 +1098,9 @@ MODEL_FUNCTION_MAPPING = {
     "vllm": prepare_vllm_model,
     "yolo": prepare_yolo_model,
     "embedding": prepare_embedding_model,
+    "my_aesthetic": prepare_my_aesthetic_model,
+    "my_ocr": prepare_my_ocr_model,
+    "my_optical": prepare_my_optical_model,
 }
 
 _MODELS_WITHOUT_FILE_LOCK = {"fasttext", "fastsam", "kenlm", "nltk", "recognizeAnything", "sentencepiece", "spacy"}

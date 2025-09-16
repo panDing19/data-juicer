@@ -55,6 +55,10 @@ from .video_watermark_filter import VideoWatermarkFilter
 from .word_repetition_filter import WordRepetitionFilter
 from .words_num_filter import WordsNumFilter
 
+from .my_asethethic_filter import MyAestheticFilter
+from .my_ocr_filter import MyOCRFilter
+from .my_optical_filter import MyOpticalFilter
+
 __all__ = [
     "AlphanumericFilter",
     "AudioDurationFilter",
@@ -110,6 +114,9 @@ __all__ = [
     "WordRepetitionFilter",
     "WordsNumFilter",
     "GeneralFieldFilter",
+    "MyAestheticFilter",
+    "MyOCRFilter",
+    "MyOpticalFilter",
 ]
 
 NON_STATS_FILTERS = [

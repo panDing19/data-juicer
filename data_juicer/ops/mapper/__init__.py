@@ -89,6 +89,8 @@ from .video_tagging_from_audio_mapper import VideoTaggingFromAudioMapper
 from .video_tagging_from_frames_mapper import VideoTaggingFromFramesMapper
 from .whitespace_normalization_mapper import WhitespaceNormalizationMapper
 
+from .my_video_splitter import MyVideoSplitter
+
 __all__ = [
     "AudioAddGaussianNoiseMapper",
     "AudioFFmpegWrappedMapper",
@@ -174,4 +176,5 @@ __all__ = [
     "VideoTaggingFromAudioMapper",
     "VideoTaggingFromFramesMapper",
     "WhitespaceNormalizationMapper",
+    "MyVideoSplitter",
 ]
