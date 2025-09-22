@@ -90,6 +90,9 @@ from .video_tagging_from_frames_mapper import VideoTaggingFromFramesMapper
 from .whitespace_normalization_mapper import WhitespaceNormalizationMapper
 
 from .my_video_splitter import MyVideoSplitter
+from .my_aesthetic_preprocess import MyAestheticPreprocess
+from .my_ocr_preprocess import MyOCRPreprocess
+from .my_optical_preprocess import MyOpticalPreprocess
 
 __all__ = [
     "AudioAddGaussianNoiseMapper",
@@ -177,4 +180,7 @@ __all__ = [
     "VideoTaggingFromFramesMapper",
     "WhitespaceNormalizationMapper",
     "MyVideoSplitter",
+    "MyAestheticPreprocess",
+    "MyOCRPreprocess",
+    "MyOpticalPreprocess",
 ]
