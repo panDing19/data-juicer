@@ -184,9 +184,13 @@ class MyVideoSplitter(Mapper):
         for video_paths in samples[self.video_key]:
             for video_path in video_paths:
                 clip_paths = self._process_single_video(video_path)
+                logger.warning(f"Split video {video_path} into {len(clip_paths)} clips.")
                 for clip_path in clip_paths:
                     res_samples[self.video_key].append([clip_path])
                     res_samples[self.text_key].append('just for fake')
+        for key, value in samples.items():
+            if key not in res_samples:
+                res_samples[key] = value
         return res_samples
 
         
