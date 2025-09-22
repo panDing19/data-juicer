@@ -568,6 +568,7 @@ def init_configs(args: Optional[List[str]] = None, which_entry: object = None, l
             # Parse all arguments
             with timing_context("Parsing arguments"):
                 cfg = parser.parse_args(args=args)
+                logger.warning(f"np of cfg after parsing is {cfg.get('np', None)}")
 
                 if cfg.custom_operator_paths:
                     load_custom_operators(cfg.custom_operator_paths)
@@ -666,6 +667,7 @@ def init_setup_from_cfg(cfg: Namespace, load_configs_only=False):
             f"mixture of several datasets."
         )
 
+    logger.warning(f"np is set to [{cfg.get('np', None)}]")
     # check number of processes np
     sys_cpu_count = os.cpu_count()
     if cfg.get("np", None) is None:

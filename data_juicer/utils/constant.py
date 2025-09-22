@@ -26,6 +26,11 @@ class Fields(object):
     # the name of directory to store the produced multimodal data
     multimodal_data_output_dir = DEFAULT_PREFIX + "produced_data__"
 
+    # my_fields
+    my_aes_preprocessed_frames = DEFAULT_PREFIX + "my_aes_preprocessed_frames__"
+    my_ocr_preprocessed_frames = DEFAULT_PREFIX + "my_ocr_preprocessed_frames__"
+    my_optical_preprocessed_frames = DEFAULT_PREFIX + "my_optical_preprocessed_frames__"
+
 
 class BatchMetaKeys(object):
     entity_attribute = "entity_attribute"
@@ -278,6 +283,14 @@ class StatsKeysConstant(object):
 
     # general-field-filter
     general_field_filter_condition = "general_field_filter_condition"
+
+    # my_fields
+    my_aesthetic_score = "my_aesthetic_score"
+    my_ocr_score = "my_ocr_score"
+    my_ocr_ratio_h = "my_ocr_ratio_h"
+    my_ocr_ratio_w = "my_ocr_ratio_w"
+    my_ocr_total_area = "my_ocr_total_area"
+    my_optical_score = "my_optical_score"
 
 
 class StatsKeys(object, metaclass=StatsKeysMeta):

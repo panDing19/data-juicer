@@ -152,6 +152,7 @@ class RayDataset(DJDataset):
         return self
 
     def _run_single_op(self, op):
+        logger.warning(f"op is {op}, num_proc is {self.num_proc}, op.num_proc is {op.num_proc}")
         op_proc = calculate_np(op._name, op.mem_required, op.cpu_required, self.num_proc, op.use_cuda())
         num_gpus = get_num_gpus(op, op_proc)
 

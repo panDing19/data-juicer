@@ -8,7 +8,6 @@ from loguru import logger
 
 from data_juicer import cuda_device_count
 
-
 def setup_mp(method=None):
     if mp.current_process().name != "MainProcess":
         return
@@ -77,6 +76,7 @@ def calculate_np(name, mem_required, cpu_required, num_proc=None, use_cuda=False
                 )
 
         if auto_num_proc and num_proc:
+            logger.warning(f"for {name}, auto_num_proc: {auto_num_proc}, num_proc: {num_proc}")
             op_proc = min(auto_num_proc, num_proc)
             if num_proc > auto_num_proc:
                 logger.warning(

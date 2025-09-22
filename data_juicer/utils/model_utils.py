@@ -10,7 +10,7 @@ from typing import Optional, Union
 import httpx
 import multiprocess as mp
 import wget
-from loguru_demo import logger
+from loguru import logger
 from collections import OrderedDict
 
 from data_juicer.utils.my_models import AestheticScorer

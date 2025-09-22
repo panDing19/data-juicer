@@ -1,0 +1,45 @@
+project_name: 'my-process-1'
+dataset_path: './demos/my_data/demo.parquet'  # path to your dataset
+export_path: './outputs/demo-process/my-processed.jsonl'
+
+use_cache: false
+executor_type: ray
+
+process:
+  - my_video_splitter:
+      output_dir: './outputs/my_output/split_videos'
+      batch_size: 1
+      num_proc: 10
+  - my_aesthetic_preprocess:
+      clip_model_path: 'my_pretrained_model/ViT-L-14.pt'
+      num_proc: 5
+  - my_aesthetic_process:
+      weight_model_path: './my_pretrained_model/aesthetic.pth'
+      clip_model_path: 'my_pretrained_model/ViT-L-14.pt'
+      num_proc: 1
+      gpu_required: 0.1
+  - my_ocr_preprocess:
+      num_proc: 5
+  - my_ocr_process:
+      model_path: './my_pretrained_model/craft_mlt_25k.pth'
+      gpu_required: 0.1
+  - my_optical_preprocess:
+      num_proc: 5
+  - my_optical_process:
+      model_path: './my_pretrained_model/gmflow-scale2-regrefine6-mixdata-train320x576-4e7b215d.pth'
+      num_proc: 1
+      gpu_required: 0.1
+  # - my_aesthetic_filter:
+  #     weight_model_path: './my_pretrained_model/aesthetic.pth'
+  #     clip_model_path: './my_pretrained_model/ViT-L-14.pt'
+  #     num_proc: 1
+  #     gpu_required: 0.1
+  # - my_ocr_filter:
+  #     model_path: './my_pretrained_model/craft_mlt_25k.pth'
+  #     num_proc: 1
+  #     gpu_required: 0.1
+  # - my_optical_filter:
+  #     model_path: './my_pretrained_model/gmflow-scale2-regrefine6-mixdata-train320x576-4e7b215d.pth'
+  #     verbose: true
+  #     num_proc: 1
+  #     gpu_required: 0.1

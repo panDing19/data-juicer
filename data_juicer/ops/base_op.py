@@ -1,6 +1,7 @@
 import copy
 from functools import wraps
 
+from loguru import logger
 import numpy as np
 import pyarrow as pa
 
@@ -209,6 +210,7 @@ class OP:
                 setattr(self, f"_{name}", method)
                 method = wrap_func_with_nested_access(method)
                 setattr(self, name, method)
+        logger.warning(f"num_proc for {self._name} is {self.num_proc}")
 
     def is_batched_op(self):
         return self._batched_op
