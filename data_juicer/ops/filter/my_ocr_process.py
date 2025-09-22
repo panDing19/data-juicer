@@ -66,6 +66,7 @@ class MyOCRProcess(Filter):
             area_ratio = self.postprocess(y, ratio_h, ratio_w, total_area)
             ocr_scores.append(area_ratio)
 
+        del sample[Fields.my_ocr_preprocessed_frames]
         sample[Fields.stats][StatsKeys.my_ocr_score] = ocr_scores
         return sample
     

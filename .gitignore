@@ -31,3 +31,6 @@ tests/ops/data/*dup*
 tests/tools/tmp_*/
 tests/ops/deduplicator/chinese_dedup/
 tests/ops/deduplicator/english_dedup/
+
+# my ignored files
+my_pretrained_model/

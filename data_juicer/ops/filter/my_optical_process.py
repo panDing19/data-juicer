@@ -56,6 +56,8 @@ class MyOpticalProcess(Filter):
             # Preprocess frames to tensors
             optical_score = self.compute_optical_flow_score(processed_frames, rank=rank)
             optical_scores.append(optical_score)
+
+        del sample[Fields.my_optical_preprocessed_frames]
         sample[Fields.stats][StatsKeys.my_optical_score] = optical_scores
         return sample
         

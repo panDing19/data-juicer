@@ -26,10 +26,14 @@ class MLP(nn.Module):
 
 class AestheticScorer(nn.Module):
     """Model to predict aesthetic scores for images and videos."""
-    def __init__(self, input_size, device, model_path=None):
+    def __init__(self, input_size, device, clip_model_path=None, model_path=None):
         super().__init__()
         self.mlp = MLP(input_size)
-        self.clip, self.preprocess = clip.load("ViT-L/14", device=device)
+        if clip_model_path is not None:
+            self.clip, self.preprocess = clip.load(clip_model_path, device=device)
+        else:
+            raise(ValueError("I don't want it to load from downloading model"))
+            self.clip, self.preprocess = clip.load("ViT-L/14", device=device)
         
         # Load pre-trained aesthetic model weights
         if model_path is not None:
@@ -37,6 +41,7 @@ class AestheticScorer(nn.Module):
                 self.mlp.load_state_dict(torch.load(model_path, map_location=device))
                 print(f"Loaded aesthetic model weights from {model_path}")
             else:
+                raise(ValueError("Aesthetic model weights not found"))
                 print(f"Warning: Aesthetic model weights not found at {model_path}. Using uninitialized weights.")
         else:
             # Try default path as fallback

@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import argparse
 
 def jsonl_to_parquet(jsonl_file_path, parquet_file_path):
     """
@@ -55,8 +56,14 @@ if __name__ == "__main__":
 #     print("Created 'sample.jsonl'")
 
     # 2. 调用转换函数
-    jsonl_file = "demo.jsonl"
-    parquet_file = "demo.parquet"
+    parser = argparse.ArgumentParser(description="Convert JSONL to Parquet")
+    parser.add_argument("--jsonl", type=str, default="demo.jsonl", help="\
+                        Path to the input JSONL file")
+    parser.add_argument("--parquet", type=str, default="demo.parquet", help="\
+                        Path to the output Parquet file")
+    args = parser.parse_args()
+    jsonl_file = args.jsonl
+    parquet_file = args.parquet
     jsonl_to_parquet(jsonl_file, parquet_file)
 
     # 3. 验证 Parquet 文件 (可选)

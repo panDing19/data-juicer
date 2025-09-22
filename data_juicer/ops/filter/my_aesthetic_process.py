@@ -69,6 +69,7 @@ class MyAestheticProcess(Filter):
             score = self.score_frames(processed_frames, rank=rank)
             aesthetics_scores.append(score)
 
+        del sample[Fields.my_aes_preprocessed_frames]
         sample[Fields.stats][StatsKeys.my_aesthetic_score] = aesthetics_scores
         return sample
     
