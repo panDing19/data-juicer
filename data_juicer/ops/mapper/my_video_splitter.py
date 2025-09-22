@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from loguru_demo import logger
+from loguru import logger
 from typing import List
 from imageio_ffmpeg import get_ffmpeg_exe
 from scenedetect import FrameTimecode, AdaptiveDetector, detect

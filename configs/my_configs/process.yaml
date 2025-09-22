@@ -13,14 +13,14 @@ process:
   - my_aesthetic_filter:
       weight_model_path: './my_pretrained_model/aesthetic.pth'
       clip_model_path: './my_pretrained_model/ViT-L-14.pt'
-      num_proc: 2
-      gpu_required: 1
+      num_proc: 1
+      gpu_required: 0.1
   - my_ocr_filter:
       model_path: './my_pretrained_model/craft_mlt_25k.pth'
-      num_proc: 2
-      gpu_required: 1
+      num_proc: 1
+      gpu_required: 0.1
   - my_optical_filter:
       model_path: './my_pretrained_model/gmflow-scale2-regrefine6-mixdata-train320x576-4e7b215d.pth'
       verbose: true
-      num_proc: 2
-      gpu_required: 1
+      num_proc: 1
+      gpu_required: 0.1
